@@ -230,8 +230,21 @@ namespace {
   void load(istringstream& is) {
 
     string token;
-    while (is >> token)
+    if (is >> token && token != "\n")
         Options["VariantPath"] = token;
+    else
+    {
+        stringstream ss;
+        // Parse till double empty line
+        while (std::getline(cin, token))
+        {
+            ss << token << std::endl;
+            if (token == "" && cin.peek() == '\n' && cin.ignore())
+                break;
+        }
+        variants.parse_istream<false>(ss);
+        Options["UCI_Variant"].set_combo(variants.get_keys());
+    }
   }
 
   // check() is called when engine receives the "check" command.

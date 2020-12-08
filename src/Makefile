@@ -88,7 +88,7 @@ endif
 largeboards = no
 all = no
 precomputedmagics = yes
-nnue = no
+nnue = yes
 
 ifeq ($(ARCH),)
    ARCH = x86-64-modern

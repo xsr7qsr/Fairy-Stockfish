@@ -470,6 +470,9 @@ constexpr Value PieceValue[PHASE_NB][PIECE_NB] = {
 static_assert(   PieceValue[MG][PIECE_TYPE_NB + 1] == PawnValueMg
               && PieceValue[EG][PIECE_TYPE_NB + 1] == PawnValueEg, "PieceValue array broken");
 
+extern Value VariantPieceValue[PHASE_NB][PIECE_NB];
+
+
 typedef int Depth;
 
 enum : int {

@@ -494,15 +494,15 @@ namespace {
         {
             Bitboard zone = zone_bb(Us, pos.promotion_rank(), pos.max_rank());
             if (zone & (b | s))
-                score += make_score(PieceValue[MG][pos.promoted_piece_type(Pt)] - PieceValue[MG][Pt],
-                                    PieceValue[EG][pos.promoted_piece_type(Pt)] - PieceValue[EG][Pt]) / (zone & s && b ? 6 : 12);
+                score += make_score(VariantPieceValue[MG][pos.promoted_piece_type(Pt)] - VariantPieceValue[MG][Pt],
+                                    VariantPieceValue[EG][pos.promoted_piece_type(Pt)] - VariantPieceValue[EG][Pt]) / (zone & s && b ? 3 : 6);
         }
         else if (pos.piece_demotion() && pos.unpromoted_piece_on(s))
-            score -= make_score(PieceValue[MG][Pt] - PieceValue[MG][pos.unpromoted_piece_on(s)],
-                                PieceValue[EG][Pt] - PieceValue[EG][pos.unpromoted_piece_on(s)]) / 4;
+            score -= make_score(VariantPieceValue[MG][Pt] - VariantPieceValue[MG][pos.unpromoted_piece_on(s)],
+                                VariantPieceValue[EG][Pt] - VariantPieceValue[EG][pos.unpromoted_piece_on(s)]) / 2;
         else if (pos.captures_to_hand() && pos.unpromoted_piece_on(s))
-            score += make_score(PieceValue[MG][Pt] - PieceValue[MG][pos.unpromoted_piece_on(s)],
-                                PieceValue[EG][Pt] - PieceValue[EG][pos.unpromoted_piece_on(s)]) / 8;
+            score += make_score(VariantPieceValue[MG][Pt] - VariantPieceValue[MG][pos.unpromoted_piece_on(s)],
+                                VariantPieceValue[EG][Pt] - VariantPieceValue[EG][pos.unpromoted_piece_on(s)]) / 4;
 
         // Penalty if the piece is far from the kings in drop variants
         if ((pos.captures_to_hand() || pos.two_boards()) && pos.count<KING>(Them) && pos.count<KING>(Us))
@@ -636,8 +636,8 @@ namespace {
         Bitboard theirHalf = pos.board_bb() & ~forward_ranks_bb(Them, relative_rank(Them, Rank((pos.max_rank() - 1) / 2), pos.max_rank()));
         mobility[Us] += DropMobility * popcount(b & theirHalf & ~attackedBy[Them][ALL_PIECES]);
         if (pos.promoted_piece_type(pt) != NO_PIECE_TYPE && pos.drop_promoted())
-            score += make_score(std::max(PieceValue[MG][pos.promoted_piece_type(pt)] - PieceValue[MG][pt], VALUE_ZERO),
-                                std::max(PieceValue[EG][pos.promoted_piece_type(pt)] - PieceValue[EG][pt], VALUE_ZERO)) / 4 * pos.count_in_hand(Us, pt);
+            score += make_score(std::max(VariantPieceValue[MG][pos.promoted_piece_type(pt)] - VariantPieceValue[MG][pt], VALUE_ZERO),
+                                std::max(VariantPieceValue[EG][pos.promoted_piece_type(pt)] - VariantPieceValue[EG][pt], VALUE_ZERO)) / 4 * pos.count_in_hand(Us, pt);
         if (pos.enclosing_drop())
             mobility[Us] += make_score(500, 500) * popcount(b);
 
@@ -1032,8 +1032,8 @@ namespace {
     Value maxMg = VALUE_ZERO, maxEg = VALUE_ZERO;
     for (PieceType pt : pos.promotion_piece_types())
     {
-        maxMg = std::max(maxMg, PieceValue[MG][pt]);
-        maxEg = std::max(maxEg, PieceValue[EG][pt]);
+        maxMg = std::max(maxMg, VariantPieceValue[MG][pt]);
+        maxEg = std::max(maxEg, VariantPieceValue[EG][pt]);
     }
     score = make_score(mg_value(score) * int(maxMg - PawnValueMg) / (QueenValueMg - PawnValueMg),
                        eg_value(score) * int(maxEg - PawnValueEg) / (QueenValueEg - PawnValueEg));

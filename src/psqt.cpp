@@ -25,6 +25,8 @@
 #include "variant.h"
 #include "misc.h"
 
+Value VariantPieceValue[PHASE_NB][PIECE_NB];
+
 namespace PSQT {
 
 #define S(mg, eg) make_score(mg, eg)
@@ -176,6 +178,9 @@ void init(const Variant* v) {
       if (   v->extinctionValue == VALUE_MATE
           && v->extinctionPieceTypes.find(ALL_PIECES) != v->extinctionPieceTypes.end())
           score = -make_score(mg_value(score) / 8, eg_value(score) / 8 / (1 + !pi->sliderCapture.size()));
+
+      VariantPieceValue[MG][pc] = VariantPieceValue[MG][~pc] = mg_value(score) * (v->capturesToHand ? 2 : 1);
+      VariantPieceValue[EG][pc] = VariantPieceValue[EG][~pc] = eg_value(score) * (v->capturesToHand ? 2 : 1);
 
       // Determine pawn rank
       std::istringstream ss(v->startFen);

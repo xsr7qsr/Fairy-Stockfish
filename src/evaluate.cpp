@@ -495,14 +495,14 @@ namespace {
             Bitboard zone = zone_bb(Us, pos.promotion_rank(), pos.max_rank());
             if (zone & (b | s))
                 score += make_score(VariantPieceValue[MG][pos.promoted_piece_type(Pt)] - VariantPieceValue[MG][Pt],
-                                    VariantPieceValue[EG][pos.promoted_piece_type(Pt)] - VariantPieceValue[EG][Pt]) / (zone & s && b ? 3 : 6);
+                                    VariantPieceValue[EG][pos.promoted_piece_type(Pt)] - VariantPieceValue[EG][Pt]) / (zone & s && b ? 5 : 10);
         }
         else if (pos.piece_demotion() && pos.unpromoted_piece_on(s))
             score -= make_score(VariantPieceValue[MG][Pt] - VariantPieceValue[MG][pos.unpromoted_piece_on(s)],
-                                VariantPieceValue[EG][Pt] - VariantPieceValue[EG][pos.unpromoted_piece_on(s)]) / 2;
+                                VariantPieceValue[EG][Pt] - VariantPieceValue[EG][pos.unpromoted_piece_on(s)]) / 3;
         else if (pos.captures_to_hand() && pos.unpromoted_piece_on(s))
             score += make_score(VariantPieceValue[MG][Pt] - VariantPieceValue[MG][pos.unpromoted_piece_on(s)],
-                                VariantPieceValue[EG][Pt] - VariantPieceValue[EG][pos.unpromoted_piece_on(s)]) / 4;
+                                VariantPieceValue[EG][Pt] - VariantPieceValue[EG][pos.unpromoted_piece_on(s)]) / 6;
 
         // Penalty if the piece is far from the kings in drop variants
         if ((pos.captures_to_hand() || pos.two_boards()) && pos.count<KING>(Them) && pos.count<KING>(Us))
@@ -637,7 +637,7 @@ namespace {
         mobility[Us] += DropMobility * popcount(b & theirHalf & ~attackedBy[Them][ALL_PIECES]);
         if (pos.promoted_piece_type(pt) != NO_PIECE_TYPE && pos.drop_promoted())
             score += make_score(std::max(VariantPieceValue[MG][pos.promoted_piece_type(pt)] - VariantPieceValue[MG][pt], VALUE_ZERO),
-                                std::max(VariantPieceValue[EG][pos.promoted_piece_type(pt)] - VariantPieceValue[EG][pt], VALUE_ZERO)) / 4 * pos.count_in_hand(Us, pt);
+                                std::max(VariantPieceValue[EG][pos.promoted_piece_type(pt)] - VariantPieceValue[EG][pt], VALUE_ZERO)) / 6 * pos.count_in_hand(Us, pt);
         if (pos.enclosing_drop())
             mobility[Us] += make_score(500, 500) * popcount(b);
 

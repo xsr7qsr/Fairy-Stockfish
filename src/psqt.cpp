@@ -174,13 +174,13 @@ void init(const Variant* v) {
               score += make_score(std::max(QueenValueMg - PieceValue[MG][pt], VALUE_ZERO) / 20,
                                   std::max(QueenValueEg - PieceValue[EG][pt], VALUE_ZERO) / 20);
 
+      VariantPieceValue[MG][pc] = VariantPieceValue[MG][~pc] = mg_value(score) * (1 + v->capturesToHand);
+      VariantPieceValue[EG][pc] = VariantPieceValue[EG][~pc] = eg_value(score) * (1 + v->capturesToHand);
+
       // For antichess variants, use negative piece values
       if (   v->extinctionValue == VALUE_MATE
           && v->extinctionPieceTypes.find(ALL_PIECES) != v->extinctionPieceTypes.end())
           score = -make_score(mg_value(score) / 8, eg_value(score) / 8 / (1 + !pi->sliderCapture.size()));
-
-      VariantPieceValue[MG][pc] = VariantPieceValue[MG][~pc] = mg_value(score);
-      VariantPieceValue[EG][pc] = VariantPieceValue[EG][~pc] = eg_value(score);
 
       // Determine pawn rank
       std::istringstream ss(v->startFen);

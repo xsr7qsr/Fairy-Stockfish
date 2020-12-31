@@ -147,7 +147,7 @@ void init(const Variant* v) {
       }
 
       // Increase leapers' value in makpong
-      if (v->makpongRule)
+      if (v->makpongRule || v->capturesToHand)
       {
           if (std::any_of(pi->stepsCapture.begin(), pi->stepsCapture.end(), [](Direction d) { return dist(d) > 1; })
                   && !pi->lameLeaper)

@@ -24,6 +24,7 @@
 #include "parser.h"
 #include "piece.h"
 #include "variant.h"
+#include "movepick.h"
 
 using std::string;
 
@@ -1054,6 +1055,23 @@ void VariantMap::init() {
     add("janggimodern", janggi_modern_variant()->conclude());
     add("janggicasual", janggi_casual_variant()->conclude());
 #endif
+}
+
+// Variant::conclude pre-calculates derived properties
+Variant* Variant::conclude() {
+    isFairy = std::any_of(pieceTypes.begin(), pieceTypes.end(), [](PieceType pt) { return pt >= FAIRY_PIECES && pt < KING; });
+    isRestricted = std::any_of(pieceTypes.begin(), pieceTypes.end(),
+                                [this](PieceType pt) {
+                                    return mobilityRegion[WHITE][pt] || mobilityRegion[BLACK][pt];
+                                });
+    int i = PAWN;
+    for (PieceType pt : pieceTypes)
+    {
+        pieceSlot[make_piece(WHITE, pt)] = i;
+        pieceSlot[make_piece(BLACK, pt)] = PIECE_SLOTS + i;
+        i = (i + 1) % PIECE_SLOTS;
+    }
+    return this;
 }
 
 

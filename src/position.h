@@ -184,6 +184,7 @@ public:
   int count_in_hand(Color c, PieceType pt) const;
   int count_with_hand(Color c, PieceType pt) const;
   bool bikjang() const;
+  int history_slot(Piece pc) const;
 
   // Position representation
   Bitboard pieces(PieceType pt = ALL_PIECES) const;
@@ -1143,6 +1144,11 @@ inline int Position::count_with_hand(Color c, PieceType pt) const {
 
 inline bool Position::bikjang() const {
   return st->bikjang;
+}
+
+inline int Position::history_slot(Piece pc) const {
+  assert(var != nullptr);
+  return var->pieceSlot[pc];
 }
 
 inline Value Position::material_counting_result() const {

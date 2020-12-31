@@ -127,6 +127,7 @@ struct Variant {
   // Derived properties
   bool isFairy = true;
   bool isRestricted = true;
+  int pieceSlot[PIECE_NB];
 
   void add_piece(PieceType pt, char c, char c2 = ' ') {
       pieceToChar[make_piece(WHITE, pt)] = toupper(c);
@@ -150,15 +151,8 @@ struct Variant {
       pieceTypes.clear();
   }
 
-  // Pre-calculate derived properties
-  Variant* conclude() {
-      isFairy = std::any_of(pieceTypes.begin(), pieceTypes.end(), [](PieceType pt) { return pt >= FAIRY_PIECES && pt < KING; });
-      isRestricted = std::any_of(pieceTypes.begin(), pieceTypes.end(),
-                                 [this](PieceType pt) {
-                                     return mobilityRegion[WHITE][pt] || mobilityRegion[BLACK][pt];
-                                 });
-      return this;
-  }
+  Variant* conclude();
+
 };
 
 class VariantMap : public std::map<std::string, const Variant*> {

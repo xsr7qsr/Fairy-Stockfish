@@ -20,10 +20,6 @@
 
 #include "movepick.h"
 
-int history_slot(Piece pc) {
-    return pc == NO_PIECE ? 0 : (type_of(pc) == KING ? PIECE_SLOTS - 1 : type_of(pc) % (PIECE_SLOTS - 1)) + color_of(pc) * PIECE_SLOTS;
-}
-
 namespace {
 
   enum Stages {
@@ -109,10 +105,10 @@ void MovePicker::score() {
 
       else if (Type == QUIETS)
           m.value =      (*mainHistory)[pos.side_to_move()][from_to(m)]
-                   + 2 * (*continuationHistory[0])[history_slot(pos.moved_piece(m))][to_sq(m)]
-                   + 2 * (*continuationHistory[1])[history_slot(pos.moved_piece(m))][to_sq(m)]
-                   + 2 * (*continuationHistory[3])[history_slot(pos.moved_piece(m))][to_sq(m)]
-                   +     (*continuationHistory[5])[history_slot(pos.moved_piece(m))][to_sq(m)]
+                   + 2 * (*continuationHistory[0])[pos.history_slot(pos.moved_piece(m))][to_sq(m)]
+                   + 2 * (*continuationHistory[1])[pos.history_slot(pos.moved_piece(m))][to_sq(m)]
+                   + 2 * (*continuationHistory[3])[pos.history_slot(pos.moved_piece(m))][to_sq(m)]
+                   +     (*continuationHistory[5])[pos.history_slot(pos.moved_piece(m))][to_sq(m)]
                    + (ply < MAX_LPH ? std::min(4, depth / 3) * (*lowPlyHistory)[ply][from_to(m)] : 0);
 
       else // Type == EVASIONS
@@ -122,7 +118,7 @@ void MovePicker::score() {
                        - Value(type_of(pos.moved_piece(m)));
           else
               m.value =  (*mainHistory)[pos.side_to_move()][from_to(m)]
-                       + (*continuationHistory[0])[history_slot(pos.moved_piece(m))][to_sq(m)]
+                       + (*continuationHistory[0])[pos.history_slot(pos.moved_piece(m))][to_sq(m)]
                        - (1 << 28);
       }
 }

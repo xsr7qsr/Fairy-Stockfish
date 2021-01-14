@@ -160,12 +160,15 @@ void init(const Variant* v) {
 
       // For drop variants, halve the piece values
       if (v->capturesToHand)
-          score = make_score(mg_value(score) * 7000 / (7000 + mg_value(score)),
+          score = make_score(mg_value(score) * 6000 / (6000 + mg_value(score)),
                              eg_value(score) * 7000 / (7000 + eg_value(score)));
       else if (!v->checking)
           score = make_score(mg_value(score) * 2000 / (3500 + mg_value(score)),
                              eg_value(score) * 2200 / (3500 + eg_value(score)));
       else if (v->twoBoards)
+          score = make_score(mg_value(score) * 7000 / (7000 + mg_value(score)),
+                             eg_value(score) * 7000 / (7000 + eg_value(score)));
+      else if (v->mustCapture)
           score = make_score(mg_value(score) * 7000 / (7000 + mg_value(score)),
                              eg_value(score) * 7000 / (7000 + eg_value(score)));
       else if (v->checkCounting)
@@ -174,7 +177,7 @@ void init(const Variant* v) {
       else if (   v->extinctionValue == -VALUE_MATE
                && v->extinctionPieceCount == 0
                && v->extinctionPieceTypes.find(ALL_PIECES) != v->extinctionPieceTypes.end())
-          score += make_score(0, std::max(KnightValueEg - PieceValue[EG][pt], VALUE_ZERO) / 20);
+          score += make_score(0, std::max(KnightValueEg - PieceValue[EG][pt], VALUE_ZERO) / 10);
       else if (pt == strongestPiece)
               score += make_score(std::max(QueenValueMg - PieceValue[MG][pt], VALUE_ZERO) / 20,
                                   std::max(QueenValueEg - PieceValue[EG][pt], VALUE_ZERO) / 20);

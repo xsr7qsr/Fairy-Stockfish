@@ -495,7 +495,7 @@ namespace {
             Bitboard zone = zone_bb(Us, pos.promotion_rank(), pos.max_rank());
             if (zone & (b | s))
                 score += make_score(EvalPieceValue[MG][pos.promoted_piece_type(Pt)] - EvalPieceValue[MG][Pt],
-                                    EvalPieceValue[EG][pos.promoted_piece_type(Pt)] - EvalPieceValue[EG][Pt]) / (zone & s && b ? 2 : 4);
+                                    EvalPieceValue[EG][pos.promoted_piece_type(Pt)] - EvalPieceValue[EG][Pt]) / (zone & s && b ? 2 : 5);
         }
         else if (pos.piece_demotion() && pos.unpromoted_piece_on(s))
             score -= make_score(EvalPieceValue[MG][Pt] - EvalPieceValue[MG][pos.unpromoted_piece_on(s)],

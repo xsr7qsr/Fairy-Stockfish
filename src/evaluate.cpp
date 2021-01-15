@@ -1062,7 +1062,7 @@ namespace {
             Square blockSq = s + Up;
             int d = 2 * std::max(pos.promotion_rank() - relative_rank(Us, s, pos.max_rank()), 1);
             d += !!(attackedBy[Them][ALL_PIECES] & ~attackedBy2[Us] & blockSq);
-            score += make_score(EvalPieceValue[MG][pt], EvalPieceValue[EG][pt]) * 3 / (d * d);
+            score += make_score(PieceValue[MG][pt], PieceValue[EG][pt]) / (d * d);
         }
     }
 

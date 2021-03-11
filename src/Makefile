@@ -87,7 +87,7 @@ endif
 largeboards = yes
 all = no
 precomputedmagics = yes
-nnue = no
+nnue = yes
 load_net = $(if $(filter $(nnue),yes),net)
 
 ifeq ($(ARCH),)

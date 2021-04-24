@@ -236,6 +236,7 @@ namespace {
         v->flagMove = true;
         v->castling = false;
         v->checking = false;
+        v->pieceValue[EG][ROOK] = 900;
         return v;
     }
     // Knightmate
@@ -345,6 +346,7 @@ namespace {
         v->enPassantRegion = Rank3BB | Rank6BB; // exclude en passant on second rank
         v->extinctionValue = -VALUE_MATE;
         v->extinctionPieceTypes = {ALL_PIECES};
+        v->pieceValue[MG][QUEEN] = 3000;
         return v;
     }
     // Atomic chess without checks (ICC rules)
@@ -365,6 +367,8 @@ namespace {
     Variant* atomic_variant() {
         Variant* v = nocheckatomic_variant();
         v->extinctionPseudoRoyal = true;
+        v->pieceValue[MG][ROOK] = 1500;
+        v->pieceValue[EG][QUEEN] = 3000;
         return v;
     }
     // Three-check chess
@@ -374,6 +378,8 @@ namespace {
         Variant* v = chess_variant_base();
         v->startFen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 3+3 0 1";
         v->checkCounting = true;
+        v->pieceValue[EG][ROOK] = 1500;
+        v->pieceValue[EG][QUEEN] = 2900;
         return v;
     }
     // Five-check chess
@@ -392,6 +398,7 @@ namespace {
         v->startFen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR[] w KQkq - 0 1";
         v->pieceDrops = true;
         v->capturesToHand = true;
+        v->pieceValue[MG][QUEEN] = 1000;
         return v;
     }
     // Loop chess

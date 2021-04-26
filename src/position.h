@@ -306,6 +306,7 @@ public:
   StateInfo* state() const;
 
 private:
+    friend class FairyBoard;
   // Initialization helpers (used while setting up a position)
   void set_castling_right(Color c, Square rfrom);
   void set_state(StateInfo* si) const;
